@@ -355,12 +355,57 @@ public class BSTree<T extends Comparable<? super T>> implements Iterable {
     /* * * * * Extra Credit Methods * * * * */
 
     public ArrayList<T> intersection(Iterator<T> iter1, Iterator<T> iter2) {
-        /* TODO */
-        return null;
+        ArrayList<T> result = new ArrayList<>();
+        
+        while (iter1.hasNext() && iter2.hasNext()) {
+            T elem1 = iter1.next();
+            T elem2 = iter2.next();
+            
+            int compare = elem1.compareTo(elem2);
+            if (compare == 0) {
+                result.add(elem1);
+            } else if (compare < 0) {
+                iter1.next();
+            } else {
+                iter2.next();
+            }
+        }
+        
+        return result;
     }
 
     public T levelMax(int level) {
-        /* TODO */
-        return null;
+        if (level < 0) {
+            return null;
+        }
+        
+        ArrayList<T> nodesAtLevel = new ArrayList<>();
+        traverseLevel(root, level, 0, nodesAtLevel);
+        
+        if (nodesAtLevel.isEmpty()) {
+            return null;
+        }
+        
+        T max = nodesAtLevel.get(0);
+        for (T node : nodesAtLevel) {
+            if (node.compareTo(max) > 0) {
+                max = node;
+            }
+        }
+        
+        return max;
+    }
+
+    private void traverseLevel(BSTNode node, int targetLevel, int currentLevel, ArrayList<T> nodesAtLevel) {
+        if (node == null) {
+            return;
+        }
+        
+        if (currentLevel == targetLevel) {
+            nodesAtLevel.add(node.getKey());
+        } else {
+            traverseLevel(node.getLeft(), targetLevel, currentLevel + 1, nodesAtLevel);
+            traverseLevel(node.getRight(), targetLevel, currentLevel + 1, nodesAtLevel);
+        }
     }
 }

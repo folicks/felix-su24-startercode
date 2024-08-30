@@ -47,6 +47,46 @@ public class SearchEngine {
                 // populate three trees with the information you just read
                 // hint: create a helper function and reuse it to build all three trees
 
+
+                for (String actor : cast) {
+                String lowerCaseActor = actor.toLowerCase();
+                if (!movieTree.findKey(lowerCaseActor)) {
+                    movieTree.insertData(lowerCaseActor, movie);
+                } else {
+                    LinkedList<String> movies = movieTree.findDataList(lowerCaseActor);
+                    if (!movies.contains(movie)) {
+                        movies.add(movie);
+                    }
+                }
+                }
+
+                // Populate studioTree
+                for (String studio : studios) {
+                    String lowerCaseStudio = studio.toLowerCase();
+                    if (!studioTree.findKey(lowerCaseStudio)) {
+                        studioTree.insertData(lowerCaseStudio, movie);
+                    } else {
+                        LinkedList<String> movies = studioTree.findDataList(lowerCaseStudio);
+                        if (!movies.contains(movie)) {
+                            movies.add(movie);
+                        }
+                    }
+                }
+
+                // Populate ratingTree
+                for (String actor : cast) {
+                    String lowerCaseActor = actor.toLowerCase();
+                    if (!ratingTree.findKey(lowerCaseActor)) {
+                        ratingTree.insertData(lowerCaseActor, rating);
+                    } else {
+                        LinkedList<String> ratings = ratingTree.findDataList(lowerCaseActor);
+                        if (!ratings.contains(rating)) {
+                            ratings.add(rating);
+                        }
+                    }
+                }
+
+
             }
             scanner.close();
         } catch (FileNotFoundException e) {
@@ -99,16 +139,47 @@ public class SearchEngine {
      */
     public static void main(String[] args) {
 
-        /* TODO */
         // initialize search trees
+        BSTree<String> movieTree = new BSTree<>();
+        BSTree<String> studioTree = new BSTree<>();
+        BSTree<String> ratingTree = new BSTree<>();
 
         // process command line arguments
         String fileName = args[0];
         int searchKind = Integer.parseInt(args[1]);
 
         // populate search trees
+        if (!populateSearchTrees(movieTree, studioTree, ratingTree, fileName)) {
+            System.out.println("File not found.");
+            return;
+        }
 
         // choose the right tree to query
 
+        BSTree<String> searchTree = null;
+        switch (searchKind) {
+            case 0:
+                searchTree = movieTree;
+                break;
+            case 1:
+                searchTree = studioTree;
+                break;
+            case 2:
+                searchTree = ratingTree;
+                break;
+            default:
+                System.out.println("Invalid search kind.");
+                return;
+        }
+
+        // Build the query from the remaining command line arguments
+        StringBuilder query = new StringBuilder();
+        for (int i = 2; i < args.length; i++) {
+            query.append(args[i]).append(' ');
+        }
+        String queryString = query.toString().trim();
+
+        // Call searchMyQuery
+        searchMyQuery(searchTree, queryString);
     }
 }

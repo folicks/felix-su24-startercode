@@ -49,15 +49,15 @@ public class SearchEngine {
 
 
                 for (String actor : cast) {
-                String lowerCaseActor = actor.toLowerCase();
-                if (!movieTree.findKey(lowerCaseActor)) {
-                    movieTree.insertData(lowerCaseActor, movie);
-                } else {
-                    LinkedList<String> movies = movieTree.findDataList(lowerCaseActor);
-                    if (!movies.contains(movie)) {
-                        movies.add(movie);
+                    String lowerCaseActor = actor.toLowerCase();
+                    if (!movieTree.findKey(lowerCaseActor)) {
+                        movieTree.insertData(lowerCaseActor, movie);
+                    } else {
+                        LinkedList<String> movies = movieTree.findDataList(lowerCaseActor);
+                        if (!movies.contains(movie)) {
+                            movies.add(movie);
+                        }
                     }
-                }
                 }
 
                 // Populate studioTree
@@ -112,6 +112,44 @@ public class SearchEngine {
 
         // search and output individual results
         // hint: list's addAll() and removeAll() methods could be helpful
+
+         Set<String> commonKeys = new HashSet<>(Arrays.asList(keys));
+    
+        // Search for common keys
+        LinkedList<String> commonResults = new LinkedList<>();
+        for (String key : commonKeys) {
+            LinkedList<String> results = searchTree.findDataList(key);
+            if (!results.isEmpty()) {
+                commonResults.addAll(results);
+            }
+        }
+        
+        // Search for individual keys
+        Map<String, LinkedList<String>> individualResults = new HashMap<>();
+        for (String key : keys) {
+            LinkedList<String> results = searchTree.findDataList(key);
+            if (!results.isEmpty()) {
+                individualResults.put(key, results);
+            }
+        }
+        
+        // Combine results
+        LinkedList<String> finalResults = new LinkedList<>();
+        finalResults.addAll(commonResults);
+        
+        // Add unique results from individual searches
+        for (Map.Entry<String, LinkedList<String>> entry : individualResults.entrySet()) {
+            if (!commonResults.contains(entry.getValue())) {
+                finalResults.addAll(entry.getValue());
+            }
+        }
+        
+        // Sort and print results
+        Object[] sortedResults = finalResults.toArray();
+        Arrays.sort(sortedResults);
+        print(query, new LinkedList<>(Arrays.asList((String[])sortedResults)));
+
+
 
     }
 

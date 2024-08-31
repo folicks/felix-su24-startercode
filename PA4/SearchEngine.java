@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.*;
 
 /**
  * Search Engine implementation.

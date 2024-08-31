@@ -95,13 +95,8 @@ public class BSTree<T extends Comparable<? super T>> implements Iterable {
             return dataList;
         }
 
-        /**
-         * Setter for left child of the node
-         *
-         * @param newleft New left child
-         */
-        public void setLeft(BSTNode newleft) {
-            left = newLeft;
+               public void setLeft(BSTNode newleft) {
+            left = newleft;
         }
 
         /**
@@ -110,7 +105,7 @@ public class BSTree<T extends Comparable<? super T>> implements Iterable {
          * @param newright New right child
          */
         public void setRight(BSTNode newright) {
-            dataList = newData;
+            right = newright;
         }
 
         /**
@@ -119,9 +114,9 @@ public class BSTree<T extends Comparable<? super T>> implements Iterable {
          * @param newData New linked list
          */
         public void setDataList(LinkedList<T> newData) {
-            dataList.add(data);
+            dataList = newData;
+//            dataList.add(data);
         }
-
         /**
          * Append new data to the end of the existing linked list of the node
          *
